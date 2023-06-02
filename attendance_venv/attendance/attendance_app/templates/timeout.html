@@ -1,0 +1,64 @@
+{% load static %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time In</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.2/instascan.min.js"></script>
+    <script src="{% static 'js/instascan.min.js' %}"></script>
+</head>
+<body style="font-family: sans-serif;">
+<nav>
+    {% include 'includes/navbar.html' %}
+</nav>
+<body>
+    
+
+
+
+    <div class="container2" style="margin-left: 340px;">
+        <video id="preview" style="width: 400px; height: 300px; border-radius: 50px;"></video>
+        <button type="submit" class="time_in" style="margin-left: 100px; margin-top: -250px;">
+            <a href="{% url 'time_in' %}">Time-in</a>
+        </button>
+        <button type="submit" class="time_out" style="margin-left: 5px; margin-top: -250px;">
+            <a href="{% url 'save_timeout' %}">Time-out</a>
+        </button>
+        <form method="post" action="{% url 'save_timeout' %}" style="margin-top: 100px; margin-left: -165px;">
+            {% csrf_token %}
+            <label>ATTENDANCE TIME-OUT:</label><br><br>
+            <input type="text" name="text" id="text" placeholder="Scan QR Code" class="form-control" style="padding: 15px; width: 150px">
+            <br><br>
+            <b>Event:<br></b><br>
+            <select id="event" name="event" style="padding: 5px">
+                <option value="none" selected disabled hidden>Type:</option>
+                {% for event in events %}
+                    <option value="{{ event.event_id }}">{{ event.event_name }}</option>
+                {% endfor %}
+            </select>
+            <br><br>
+            <input type="submit" name="submit" id="submit" value="Submit" style="padding: 15px">
+        </form>
+    </div>
+
+    <script>
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                alert('No cameras found');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+
+        scanner.addListener('scan', function (c) {
+            document.getElementById('text').value = c;
+        });
+    </script>
+
+</body>
+</html>
+

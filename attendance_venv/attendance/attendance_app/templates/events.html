@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body style="font-family: sans-serif;">
+    <nav>
+        {% include 'includes/navbar.html' %}
+          <form action="{% url 'events' %}" method="GET" class="form">
+            <input type="text" name="search" class="search" required value="{{ search }}" />
+            <input type="submit" value="Search" style="background-color: grey; padding: 8px; border-radius: 10px; color: white; border: none;">
+        </form>
+       </nav>
+    <div class="container">
+        <button type="submit" class="add_student"><a href="{% url 'add_event' %}"> Add New Event</a></button>
+        <button type="submit" style="float: right; border: solid black 1px; padding: 10px; border-radius: 5px;"><a href="" style="color: black; "> Event Attendance</a></button>
+
+        <table class="table" border="1">
+            <caption><h4>Event List</h4></caption>
+            <thead>
+                {% if records %}
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event</th>
+                        <th>Type</th>
+                        <th>Half Day Type</th>
+                        <th>Date of Event</th>
+                    </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record.event_id }}</td>
+                        <td>{{ record.event_name }}</td>
+                        <td>{{ record.type }}</td>
+                        <td>{{ record.half_day_type }}</td>
+                        <td>{{ record.eventdate }}</td>
+                        <td>
+                            <button type="submit" class="time_in">
+                                <a href="event_update/{{ record.event_id }}">Edit</a></button>
+                            <button type="submit" class="time_out">
+                                <a href="{% url 'delete_event' record.event_id %}">Delete</a>
+                            </button>                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

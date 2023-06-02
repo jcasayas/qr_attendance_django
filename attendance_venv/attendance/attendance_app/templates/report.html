@@ -1,0 +1,41 @@
+{%load static%}
+<!-- report.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QR Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+    <body style="font-family: sans-serif;">
+       <nav>
+        {% include 'includes/navbar.html' %}
+        <form action="{% url 'report' %}" method="GET" class="form">
+            <input type="text" name="search" class="search" required />
+            <input type="submit" value="Search" style="background-color: grey; padding: 8px; border-radius: 10px; color: white; border: none;">
+        </form>
+       </nav>
+        <div class="container">
+            <table class="table" border="1">
+                <center><h4>OVERALL STUDENT ATTENDANCE</h4></center>
+                    <thead>
+                        <th>Student Id</th>
+                        <th>Name</th>
+                        <th>Total Time-in:</th>
+                        <th>Total Time-out:</th>
+                        <th>Total Absents:</th>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.student_id }}</td>
+                            <td>{{ record.student_lastname }} {{ record.student_firstname }}</td>
+                            <td>{{ record.total_timein }}</td>
+                            <td>{{ record.total_timeout }}</td>
+                            <td>{{ record.total_absents }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </body>
+</html>

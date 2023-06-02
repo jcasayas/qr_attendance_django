@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QR Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body style="font-family: sans-serif;">
+    <nav>
+      {% include 'includes/navbar.html' %}
+    </nav>
+    <div class="container">
+      <form method="POST" action="{% url 'student_update' object.id %}" class="addform">
+        {% csrf_token %}
+        <b> Enter Student ID Number: <br></b>
+        {{ form.id }} <br><br>
+        <b> Enter student First name: <br></b>
+        {{ form.firstname }} <br><br>
+        <b> Enter student Last name: <br></b>
+        {{ form.lastname }} <br><br>
+        <b> Enter student middle name: <br></b>
+        {{ form.middlename }} <br><br>
+        <b> Enter student extension name: <br></b>
+        {{ form.extname }} <br><br>
+        <b>Course:<br></b>
+        {{ form.course }}<br><br>
+        <b>Year:<br></b>
+        {{ form.year }}<br><br>
+        <b>Block:<br></b>
+        {{ form.block }}<br><br>
+        <button type="submit" name="submit" class="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

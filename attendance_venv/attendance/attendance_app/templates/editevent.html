@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body style="font-family: sans-serif;">
+    <nav>
+        {% include 'includes/navbar.html' %}
+    </nav>
+    <div class="container">
+        <form method="POST" action="" class="addform">
+            {% csrf_token %}
+            <b>Enter Event Name:<br></b>
+            <input type="text" name="event_name" value="{{ event.event_name }}"><br><br>
+            <b>Type:</b>
+            <select id="type" name="type">
+                <option value="" disabled selected hidden>Type:</option>
+                <option id="Whole Day" value="Whole Day" {% if event.type == 'Whole Day' %}selected{% endif %}>Whole Day</option>
+                <option id="Half Day" value="Half Day" {% if event.type == 'Half Day' %}selected{% endif %}>Half Day</option>
+            </select>
+            <br><br>
+            <div id="type2-container" {% if event.type != 'Half Day' %}style="display:none;"{% endif %}>
+                <label for="half_day_type"><b>Half Day Type:</b></label>
+                <select id="half_day_type" name="half_day_type">
+                    <option value="" disabled selected hidden>Choose...</option>
+                    <option value="Morning" {% if event.half_day_type == 'Morning' %}selected{% endif %}>Morning</option>
+                    <option value="Afternoon" {% if event.half_day_type == 'Afternoon' %}selected{% endif %}>Afternoon</option>
+                </select>
+            </div>                
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(function() {
+                    $('#type').change(function(){
+                        if ($(this).val() == 'Half Day') {
+                            $('#type2-container').show();
+                        } else {
+                            $('#type2-container').hide();
+                        }
+                    });
+                });
+            </script>
+        
+            <br><br>
+            <b>Event Date:<br></b>
+            <input type="date" id="date" name="eventdate" value="{{ event.eventdate|date:'Y-m-d' }}">
+            <br><br>
+            <button type="submit" name="submit" id="submits" value="Submit" class="submit">Submit</button>
+        </form>
+        
+    </div>
+</body>
+</html>
